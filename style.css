@@ -1,14 +1,16 @@
 body{
 
-font-family: Arial;
-background:#f4f6f8;
-padding:20px;
+font-family:Arial;
+padding:5px;
+margin:0;
+background:#f2f4f7;
 
 }
 
-h2{
+h3{
 
-margin-bottom:12px;
+font-size:14px;
+margin:5px 0;
 
 }
 
@@ -16,15 +18,22 @@ table{
 
 width:100%;
 border-collapse:collapse;
+table-layout:fixed;
 background:white;
 
 }
 
-th,td{
+th{
+
+font-size:9px;
+padding:2px;
+
+}
+
+td{
 
 border:1px solid #ddd;
-padding:6px;
-text-align:center;
+padding:1px;
 
 }
 
@@ -33,8 +42,9 @@ input,select{
 width:100%;
 border:none;
 outline:none;
+font-size:10px;
 text-align:center;
-font-size:14px;
+background:transparent;
 
 }
 
@@ -46,13 +56,13 @@ display:none;
 
 button{
 
-margin-top:10px;
-padding:10px 16px;
+width:100%;
+margin-top:5px;
+padding:6px;
+font-size:12px;
 background:#2563eb;
 color:white;
 border:none;
-border-radius:6px;
-font-size:14px;
-cursor:pointer;
+border-radius:4px;
 
 }

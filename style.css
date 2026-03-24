@@ -1,14 +1,14 @@
 body{
 
 font-family: Arial;
-background:#f3f4f6;
+background:#f4f6f8;
 padding:20px;
 
 }
 
 h2{
 
-margin-bottom:10px;
+margin-bottom:12px;
 
 }
 
@@ -47,5 +47,6 @@ color:white;
 border:none;
 border-radius:6px;
 font-size:14px;
+cursor:pointer;
 
 }

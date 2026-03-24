@@ -38,6 +38,12 @@ font-size:14px;
 
 }
 
+.supplierInput{
+
+display:none;
+
+}
+
 button{
 
 margin-top:10px;

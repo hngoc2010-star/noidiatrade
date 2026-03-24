@@ -1,5 +1,7 @@
 function format(n){
 
+if(!n) return ""
+
 return Number(n).toLocaleString("en-US")
 
 }
@@ -13,17 +15,36 @@ return Number(n.replace(/,/g,'')) || 0
 function calc(box){
 
 let qty=clean(box.querySelector(".qty").value)
+
 let exw=clean(box.querySelector(".exw").value)
+
 let log=clean(box.querySelector(".log").value)
+
 let sell=clean(box.querySelector(".sell").value)
 
 let total=qty*exw
+
 let amount=qty*sell
+
 let profit=amount-total-log
 
 box.querySelector(".total").innerText=format(total)
+
 box.querySelector(".amount").innerText=format(amount)
+
 box.querySelector(".profit").innerText=format(profit)
+
+}
+
+function formatInput(input){
+
+let value=input.value.replace(/,/g,'')
+
+if(!isNaN(value) && value!==""){
+
+input.value=format(value)
+
+}
 
 }
 
@@ -42,7 +63,6 @@ div.innerHTML=`
 
 <div class="row">
 <select class="supplier">
-
 <option>Cường Vỹ</option>
 <option>Phúc Tiến</option>
 <option>Quang Tuệ</option>
@@ -52,17 +72,13 @@ div.innerHTML=`
 <option>Vân Long</option>
 <option>Phú Hưng</option>
 <option>Thập Hùng</option>
-
 </select>
 
 <select class="logo">
-
 <option>VNPL</option>
 <option>PhuCau</option>
 <option>Trơn</option>
-
 </select>
-
 </div>
 
 <div class="row">
@@ -81,19 +97,54 @@ Amount: <span class="amount">0</span> |
 Profit: <span class="profit">0</span>
 </div>
 
-<button class="copyBtn">Copy Result</button>
+<button class="copyBtn">Copy Order</button>
 
 `
 
-div.addEventListener("input",()=>calc(div))
+div.addEventListener("input",(e)=>{
+
+if(e.target.classList.contains("qty")||
+e.target.classList.contains("exw")||
+e.target.classList.contains("log")||
+e.target.classList.contains("sell")){
+
+formatInput(e.target)
+
+}
+
+calc(div)
+
+})
 
 div.querySelector(".copyBtn").onclick=function(){
 
+let orderDate=div.querySelector(".orderDate").value
+let deliveryDate=div.querySelector(".deliveryDate").value
+let supplier=div.querySelector(".supplier").value
+let logo=div.querySelector(".logo").value
+let qty=div.querySelector(".qty").value
+let exw=div.querySelector(".exw").value
+let log=div.querySelector(".log").value
+let sell=div.querySelector(".sell").value
 let total=div.querySelector(".total").innerText
 let amount=div.querySelector(".amount").innerText
 let profit=div.querySelector(".profit").innerText
 
-let text=`Total: ${total} | Amount: ${amount} | Profit: ${profit}`
+let text=`
+Order Date: ${orderDate}
+Delivery Date: ${deliveryDate}
+Supplier: ${supplier}
+Logo: ${logo}
+
+Qty: ${qty}
+EXW: ${exw}
+Log: ${log}
+Sell: ${sell}
+
+Total: ${total}
+Amount: ${amount}
+Profit: ${profit}
+`
 
 navigator.clipboard.writeText(text)
 

@@ -1,4 +1,4 @@
-function numberFormat(x){
+function formatNumber(x){
 
 if(!x) return ""
 
@@ -8,7 +8,7 @@ return Number(x).toLocaleString("en-US")
 
 function cleanNumber(x){
 
-return Number(x.replace(/,/g,''))
+return Number(x.replace(/,/g,'')) || 0
 
 }
 
@@ -28,11 +28,11 @@ let sellAmount=qty*sell
 
 let profit=sellAmount-totalExw-logistics
 
-row.querySelector(".totalExw").innerText=numberFormat(totalExw)
+row.querySelector(".totalExw").innerText=formatNumber(totalExw)
 
-row.querySelector(".sellAmount").innerText=numberFormat(sellAmount)
+row.querySelector(".sellAmount").innerText=formatNumber(sellAmount)
 
-row.querySelector(".profit").innerText=numberFormat(profit)
+row.querySelector(".profit").innerText=formatNumber(profit)
 
 }
 
@@ -44,7 +44,7 @@ let value=e.target.value.replace(/,/g,'')
 
 if(!isNaN(value) && value!==""){
 
-e.target.value=numberFormat(value)
+e.target.value=formatNumber(value)
 
 }
 

@@ -1,6 +1,6 @@
-function format(n){
+let orders=[]
 
-if(!n) return ""
+function format(n){
 
 return Number(n).toLocaleString("en-US")
 
@@ -9,6 +9,44 @@ return Number(n).toLocaleString("en-US")
 function clean(n){
 
 return Number(n.replace(/,/g,'')) || 0
+
+}
+
+function save(){
+
+localStorage.setItem("orders",JSON.stringify(orders))
+
+}
+
+function load(){
+
+let data=localStorage.getItem("orders")
+
+if(data){
+
+orders=JSON.parse(data)
+
+orders.forEach(o=>createOrder(o))
+
+}else{
+
+addOrder()
+
+}
+
+}
+
+function updateTotalProfit(){
+
+let total=0
+
+document.querySelectorAll(".profit").forEach(p=>{
+
+total+=clean(p.innerText)
+
+})
+
+document.getElementById("totalProfit").innerText=format(total)
 
 }
 
@@ -29,26 +67,26 @@ let amount=qty*sell
 let profit=amount-total-log
 
 box.querySelector(".total").innerText=format(total)
-
 box.querySelector(".amount").innerText=format(amount)
-
 box.querySelector(".profit").innerText=format(profit)
+
+updateTotalProfit()
 
 }
 
 function formatInput(input){
 
-let value=input.value.replace(/,/g,'')
+let v=input.value.replace(/,/g,'')
 
-if(!isNaN(value) && value!==""){
+if(!isNaN(v)&&v!=""){
 
-input.value=format(value)
-
-}
+input.value=format(v)
 
 }
 
-function addOrder(){
+}
+
+function createOrder(data={}){
 
 let div=document.createElement("div")
 
@@ -57,12 +95,14 @@ div.className="order"
 div.innerHTML=`
 
 <div class="row">
-<input type="date" class="orderDate">
-<input type="date" class="deliveryDate">
+<input type="date" class="orderDate" value="${data.orderDate||""}">
+<input type="date" class="deliveryDate" value="${data.deliveryDate||""}">
 </div>
 
 <div class="row">
+
 <select class="supplier">
+
 <option>Cường Vỹ</option>
 <option>Phúc Tiến</option>
 <option>Quang Tuệ</option>
@@ -72,23 +112,27 @@ div.innerHTML=`
 <option>Vân Long</option>
 <option>Phú Hưng</option>
 <option>Thập Hùng</option>
+
 </select>
 
 <select class="logo">
+
 <option>VNPL</option>
 <option>PhuCau</option>
 <option>Trơn</option>
+
 </select>
+
 </div>
 
 <div class="row">
-<input placeholder="Qty" class="qty">
-<input placeholder="EXW" class="exw">
+<input placeholder="Qty" class="qty" value="${data.qty||""}">
+<input placeholder="EXW" class="exw" value="${data.exw||""}">
 </div>
 
 <div class="row">
-<input placeholder="Log" class="log">
-<input placeholder="Sell" class="sell">
+<input placeholder="Log" class="log" value="${data.log||""}">
+<input placeholder="Sell" class="sell" value="${data.sell||""}">
 </div>
 
 <div class="result">
@@ -114,37 +158,13 @@ formatInput(e.target)
 
 calc(div)
 
+save()
+
 })
 
 div.querySelector(".copyBtn").onclick=function(){
 
-let orderDate=div.querySelector(".orderDate").value
-let deliveryDate=div.querySelector(".deliveryDate").value
-let supplier=div.querySelector(".supplier").value
-let logo=div.querySelector(".logo").value
-let qty=div.querySelector(".qty").value
-let exw=div.querySelector(".exw").value
-let log=div.querySelector(".log").value
-let sell=div.querySelector(".sell").value
-let total=div.querySelector(".total").innerText
-let amount=div.querySelector(".amount").innerText
-let profit=div.querySelector(".profit").innerText
-
-let text=`
-Order Date: ${orderDate}
-Delivery Date: ${deliveryDate}
-Supplier: ${supplier}
-Logo: ${logo}
-
-Qty: ${qty}
-EXW: ${exw}
-Log: ${log}
-Sell: ${sell}
-
-Total: ${total}
-Amount: ${amount}
-Profit: ${profit}
-`
+let text=div.innerText
 
 navigator.clipboard.writeText(text)
 
@@ -154,6 +174,49 @@ alert("Copied")
 
 document.getElementById("orders").appendChild(div)
 
+calc(div)
+
 }
 
-addOrder()
+function addOrder(){
+
+createOrder()
+
+}
+
+function exportCSV(){
+
+let rows=[["OrderDate","DeliveryDate","Supplier","Qty","EXW","Log","Sell","Profit"]]
+
+document.querySelectorAll(".order").forEach(o=>{
+
+rows.push([
+
+o.querySelector(".orderDate").value,
+o.querySelector(".deliveryDate").value,
+o.querySelector(".supplier").value,
+o.querySelector(".qty").value,
+o.querySelector(".exw").value,
+o.querySelector(".log").value,
+o.querySelector(".sell").value,
+o.querySelector(".profit").innerText
+
+])
+
+})
+
+let csv=rows.map(r=>r.join(",")).join("\n")
+
+let blob=new Blob([csv])
+
+let a=document.createElement("a")
+
+a.href=URL.createObjectURL(blob)
+
+a.download="orders.csv"
+
+a.click()
+
+}
+
+load()

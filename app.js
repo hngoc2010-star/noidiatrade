@@ -1,89 +1,85 @@
-let orders=[]
+let dsDon=[]
 
-function format(n){
+function dinhDangSo(n){
 
 return Number(n).toLocaleString("en-US")
 
 }
 
-function clean(v){
+function boDauPhay(n){
 
-return Number(String(v).replace(/,/g,''))||0
-
-}
-
-function save(){
-
-localStorage.setItem("plywood_orders",JSON.stringify(orders))
+return Number(String(n).replace(/,/g,''))||0
 
 }
 
-function load(){
+function dinhDangInput(o){
 
-let data=localStorage.getItem("plywood_orders")
+let v=o.value.replace(/,/g,'')
 
-if(data){
+if(!isNaN(v)&&v!=""){
 
-orders=JSON.parse(data)
-
-orders.forEach(o=>createOrder(o))
-
-}else{
-
-addOrder()
+o.value=dinhDangSo(v)
 
 }
 
 }
 
-function updateTotal(){
+function tinh(box){
 
-let total=0
+let soLuong=boDauPhay(box.querySelector(".soluong").value)
 
-document.querySelectorAll(".profit").forEach(p=>{
+let exw=boDauPhay(box.querySelector(".exw").value)
 
-total+=clean(p.innerText)
+let log=boDauPhay(box.querySelector(".log").value)
+
+let ban=boDauPhay(box.querySelector(".ban").value)
+
+let tong=soLuong*exw
+
+let doanhThu=soLuong*ban
+
+let loiNhuan=doanhThu-tong-log
+
+box.querySelector(".tong").innerText=dinhDangSo(tong)
+
+box.querySelector(".doanhthu").innerText=dinhDangSo(doanhThu)
+
+box.querySelector(".loinhuan").innerText=dinhDangSo(loiNhuan)
+
+capNhatTong()
+
+}
+
+function capNhatTong(){
+
+let tong=0
+
+document.querySelectorAll(".loinhuan").forEach(e=>{
+
+tong+=boDauPhay(e.innerText)
 
 })
 
-document.getElementById("totalProfit").innerText=format(total)
+document.getElementById("tongLoiNhuan").innerText=dinhDangSo(tong)
 
 }
 
-function calculate(box){
-
-let qty=clean(box.querySelector(".qty").value)
-let exw=clean(box.querySelector(".exw").value)
-let log=clean(box.querySelector(".log").value)
-let sell=clean(box.querySelector(".sell").value)
-
-let total=qty*exw
-let amount=qty*sell
-let profit=amount-total-log
-
-box.querySelector(".total").innerText=format(total)
-box.querySelector(".amount").innerText=format(amount)
-box.querySelector(".profit").innerText=format(profit)
-
-updateTotal()
-
-}
-
-function createOrder(data={}){
+function taoDon(data={}){
 
 let div=document.createElement("div")
+
 div.className="order"
 
 div.innerHTML=`
 
 <div class="row">
-<input type="date" class="orderDate" value="${data.orderDate||""}">
-<input type="date" class="deliveryDate" value="${data.deliveryDate||""}">
+<input type="date" class="ngaydat" value="${data.ngaydat||""}">
+<input type="date" class="ngaygiao" value="${data.ngaygiao||""}">
 </div>
 
 <div class="row">
 
-<select class="supplier">
+<select class="ncc">
 
 <option>Cường Vỹ</option>
 <option>Phúc Tiến</option>
@@ -108,129 +104,132 @@ div.innerHTML=`
 </div>
 
 <div class="row">
-<input placeholder="Qty" class="qty" value="${data.qty||""}">
-<input placeholder="EXW" class="exw" value="${data.exw||""}">
+<input placeholder="Số lượng" class="soluong" value="${data.soluong||""}">
+<input placeholder="Giá EXW" class="exw" value="${data.exw||""}">
 </div>
 
 <div class="row">
-<input placeholder="Log" class="log" value="${data.log||""}">
-<input placeholder="Sell" class="sell" value="${data.sell||""}">
+<input placeholder="Chi phí Log" class="log" value="${data.log||""}">
+<input placeholder="Giá bán" class="ban" value="${data.ban||""}">
 </div>
 
-<div class="result">
-Total: <span class="total">0</span> |
-Amount: <span class="amount">0</span> |
-Profit: <span class="profit">0</span>
+<div class="ketqua">
+Tổng: <span class="tong">0</span> |
+Doanh thu: <span class="doanhthu">0</span> |
+Lợi nhuận: <span class="loinhuan">0</span>
 </div>
 
-<button class="copyBtn">Copy Order</button>
+<button class="copy">Copy đơn</button>
 
 `
 
-div.addEventListener("input",()=>{
+div.addEventListener("input",(e)=>{
 
-calculate(div)
-saveCurrent()
+if(e.target.tagName==="INPUT"){
+
+dinhDangInput(e.target)
+
+}
+
+tinh(div)
+
+luu()
 
 })
 
-div.querySelector(".copyBtn").onclick=function(){
+div.querySelector(".copy").onclick=function(){
 
 let text=`
 
-Order Date: ${div.querySelector(".orderDate").value}
-Delivery: ${div.querySelector(".deliveryDate").value}
+Ngày đặt: ${div.querySelector(".ngaydat").value}
+Ngày giao: ${div.querySelector(".ngaygiao").value}
 
-Supplier: ${div.querySelector(".supplier").value}
+Nhà cung cấp: ${div.querySelector(".ncc").value}
 Logo: ${div.querySelector(".logo").value}
 
-Qty: ${div.querySelector(".qty").value}
-EXW: ${div.querySelector(".exw").value}
-Log: ${div.querySelector(".log").value}
-Sell: ${div.querySelector(".sell").value}
+Số lượng: ${div.querySelector(".soluong").value}
+Giá EXW: ${div.querySelector(".exw").value}
+Logistics: ${div.querySelector(".log").value}
+Giá bán: ${div.querySelector(".ban").value}
 
-Total: ${div.querySelector(".total").innerText}
-Amount: ${div.querySelector(".amount").innerText}
-Profit: ${div.querySelector(".profit").innerText}
+Tổng: ${div.querySelector(".tong").innerText}
+Doanh thu: ${div.querySelector(".doanhthu").innerText}
+Lợi nhuận: ${div.querySelector(".loinhuan").innerText}
 
 `
 
 navigator.clipboard.writeText(text)
 
-alert("Copied")
+alert("Đã copy")
 
 }
 
 document.getElementById("orders").appendChild(div)
 
-calculate(div)
+tinh(div)
 
 }
 
-function saveCurrent(){
+function luu(){
 
-orders=[]
+let arr=[]
 
 document.querySelectorAll(".order").forEach(o=>{
 
-orders.push({
+arr.push({
 
-orderDate:o.querySelector(".orderDate").value,
-deliveryDate:o.querySelector(".deliveryDate").value,
-supplier:o.querySelector(".supplier").value,
-logo:o.querySelector(".logo").value,
-qty:o.querySelector(".qty").value,
+ngaydat:o.querySelector(".ngaydat").value,
+ngaygiao:o.querySelector(".ngaygiao").value,
+soluong:o.querySelector(".soluong").value,
 exw:o.querySelector(".exw").value,
 log:o.querySelector(".log").value,
-sell:o.querySelector(".sell").value
+ban:o.querySelector(".ban").value
 
 })
 
 })
 
-save()
+localStorage.setItem("donvan",JSON.stringify(arr))
 
 }
 
-function addOrder(){
+function load(){
 
-createOrder()
+let data=localStorage.getItem("donvan")
 
-saveCurrent()
+if(data){
+
+JSON.parse(data).forEach(d=>taoDon(d))
+
+}else{
+
+themDon()
 
 }
 
-function exportExcel(){
+}
 
-let rows=[[
-"OrderDate",
-"DeliveryDate",
-"Supplier",
-"Logo",
-"Qty",
-"EXW",
-"Log",
-"Sell",
-"Total",
-"Amount",
-"Profit"
-]]
+function themDon(){
+
+taoDon()
+
+}
+
+function xuatExcel(){
+
+let rows=[["Ngày đặt","Ngày giao","Số lượng","EXW","Log","Giá bán","Lợi nhuận"]]
 
 document.querySelectorAll(".order").forEach(o=>{
 
 rows.push([
 
-o.querySelector(".orderDate").value,
-o.querySelector(".deliveryDate").value,
-o.querySelector(".supplier").value,
-o.querySelector(".logo").value,
-o.querySelector(".qty").value,
+o.querySelector(".ngaydat").value,
+o.querySelector(".ngaygiao").value,
+o.querySelector(".soluong").value,
 o.querySelector(".exw").value,
 o.querySelector(".log").value,
-o.querySelector(".sell").value,
-o.querySelector(".total").innerText,
-o.querySelector(".amount").innerText,
-o.querySelector(".profit").innerText
+o.querySelector(".ban").value,
+o.querySelector(".loinhuan").innerText
 
 ])
 
@@ -238,13 +237,13 @@ o.querySelector(".profit").innerText
 
 let csv=rows.map(r=>r.join(",")).join("\n")
 
-let blob=new Blob([csv],{type:"text/csv"})
+let blob=new Blob([csv])
 
 let a=document.createElement("a")
 
 a.href=URL.createObjectURL(blob)
 
-a.download="plywood_orders.csv"
+a.download="don_van.csv"
 
 a.click()
 

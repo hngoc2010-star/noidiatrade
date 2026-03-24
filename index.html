@@ -9,115 +9,18 @@
 <title>Plywood Orders</title>
 
 <link rel="stylesheet" href="style.css">
-
 <link rel="manifest" href="manifest.json">
-
 <link rel="apple-touch-icon" href="icon.png">
 
 </head>
 
 <body>
 
-<h3>Plywood Orders</h3>
+<h2>Plywood Order</h2>
 
-<table>
+<div id="orders"></div>
 
-<thead>
-
-<tr>
-
-<th>📅</th>
-<th>🚚</th>
-<th>NCC</th>
-<th>Qty</th>
-<th>Type</th>
-<th>F</th>
-<th>Logo</th>
-<th>EXW</th>
-<th>Total</th>
-<th>Log</th>
-<th>Sell</th>
-<th>Amount</th>
-<th>P</th>
-
-</tr>
-
-</thead>
-
-<tbody id="tbody">
-
-<tr>
-
-<td><input type="date"></td>
-
-<td><input type="date"></td>
-
-<td>
-
-<select class="supplier">
-
-<option value="">--</option>
-
-<option>Cường Vỹ</option>
-<option>Phúc Tiến</option>
-<option>Quang Tuệ</option>
-<option>Việt Long</option>
-<option>Hải Hoài</option>
-<option>Hồng Ngọc</option>
-<option>Vân Long</option>
-<option>Phú Hưng</option>
-<option>Thập Hùng</option>
-
-<option value="custom">Tự nhập</option>
-
-</select>
-
-<input class="supplierInput" placeholder="NCC">
-
-</td>
-
-<td><input class="num qty"></td>
-
-<td><input></td>
-
-<td>
-
-<select>
-<option>1F</option>
-<option>2F</option>
-</select>
-
-</td>
-
-<td>
-
-<select>
-<option>VNPL</option>
-<option>PhuCau</option>
-<option>Trơn</option>
-</select>
-
-</td>
-
-<td><input class="num exw"></td>
-
-<td class="total">0</td>
-
-<td><input class="num log"></td>
-
-<td><input class="num sell"></td>
-
-<td class="amount">0</td>
-
-<td class="profit">0</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-<button onclick="addRow()">+ Add</button>
+<button onclick="addOrder()">+ Add Order</button>
 
 <script src="app.js"></script>
 

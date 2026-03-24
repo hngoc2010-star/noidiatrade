@@ -6,21 +6,21 @@ return Number(n).toLocaleString("en-US")
 
 }
 
-function clean(n){
+function clean(v){
 
-return Number(n.replace(/,/g,'')) || 0
+return Number(String(v).replace(/,/g,''))||0
 
 }
 
 function save(){
 
-localStorage.setItem("orders",JSON.stringify(orders))
+localStorage.setItem("plywood_orders",JSON.stringify(orders))
 
 }
 
 function load(){
 
-let data=localStorage.getItem("orders")
+let data=localStorage.getItem("plywood_orders")
 
 if(data){
 
@@ -36,7 +36,7 @@ addOrder()
 
 }
 
-function updateTotalProfit(){
+function updateTotal(){
 
 let total=0
 
@@ -50,46 +50,28 @@ document.getElementById("totalProfit").innerText=format(total)
 
 }
 
-function calc(box){
+function calculate(box){
 
 let qty=clean(box.querySelector(".qty").value)
-
 let exw=clean(box.querySelector(".exw").value)
-
 let log=clean(box.querySelector(".log").value)
-
 let sell=clean(box.querySelector(".sell").value)
 
 let total=qty*exw
-
 let amount=qty*sell
-
 let profit=amount-total-log
 
 box.querySelector(".total").innerText=format(total)
 box.querySelector(".amount").innerText=format(amount)
 box.querySelector(".profit").innerText=format(profit)
 
-updateTotalProfit()
-
-}
-
-function formatInput(input){
-
-let v=input.value.replace(/,/g,'')
-
-if(!isNaN(v)&&v!=""){
-
-input.value=format(v)
-
-}
+updateTotal()
 
 }
 
 function createOrder(data={}){
 
 let div=document.createElement("div")
-
 div.className="order"
 
 div.innerHTML=`
@@ -145,26 +127,33 @@ Profit: <span class="profit">0</span>
 
 `
 
-div.addEventListener("input",(e)=>{
+div.addEventListener("input",()=>{
 
-if(e.target.classList.contains("qty")||
-e.target.classList.contains("exw")||
-e.target.classList.contains("log")||
-e.target.classList.contains("sell")){
-
-formatInput(e.target)
-
-}
-
-calc(div)
-
-save()
+calculate(div)
+saveCurrent()
 
 })
 
 div.querySelector(".copyBtn").onclick=function(){
 
-let text=div.innerText
+let text=`
+
+Order Date: ${div.querySelector(".orderDate").value}
+Delivery: ${div.querySelector(".deliveryDate").value}
+
+Supplier: ${div.querySelector(".supplier").value}
+Logo: ${div.querySelector(".logo").value}
+
+Qty: ${div.querySelector(".qty").value}
+EXW: ${div.querySelector(".exw").value}
+Log: ${div.querySelector(".log").value}
+Sell: ${div.querySelector(".sell").value}
+
+Total: ${div.querySelector(".total").innerText}
+Amount: ${div.querySelector(".amount").innerText}
+Profit: ${div.querySelector(".profit").innerText}
+
+`
 
 navigator.clipboard.writeText(text)
 
@@ -174,7 +163,32 @@ alert("Copied")
 
 document.getElementById("orders").appendChild(div)
 
-calc(div)
+calculate(div)
+
+}
+
+function saveCurrent(){
+
+orders=[]
+
+document.querySelectorAll(".order").forEach(o=>{
+
+orders.push({
+
+orderDate:o.querySelector(".orderDate").value,
+deliveryDate:o.querySelector(".deliveryDate").value,
+supplier:o.querySelector(".supplier").value,
+logo:o.querySelector(".logo").value,
+qty:o.querySelector(".qty").value,
+exw:o.querySelector(".exw").value,
+log:o.querySelector(".log").value,
+sell:o.querySelector(".sell").value
+
+})
+
+})
+
+save()
 
 }
 
@@ -182,11 +196,25 @@ function addOrder(){
 
 createOrder()
 
+saveCurrent()
+
 }
 
-function exportCSV(){
+function exportExcel(){
 
-let rows=[["OrderDate","DeliveryDate","Supplier","Qty","EXW","Log","Sell","Profit"]]
+let rows=[[
+"OrderDate",
+"DeliveryDate",
+"Supplier",
+"Logo",
+"Qty",
+"EXW",
+"Log",
+"Sell",
+"Total",
+"Amount",
+"Profit"
+]]
 
 document.querySelectorAll(".order").forEach(o=>{
 
@@ -195,10 +223,13 @@ rows.push([
 o.querySelector(".orderDate").value,
 o.querySelector(".deliveryDate").value,
 o.querySelector(".supplier").value,
+o.querySelector(".logo").value,
 o.querySelector(".qty").value,
 o.querySelector(".exw").value,
 o.querySelector(".log").value,
 o.querySelector(".sell").value,
+o.querySelector(".total").innerText,
+o.querySelector(".amount").innerText,
 o.querySelector(".profit").innerText
 
 ])
@@ -207,13 +238,13 @@ o.querySelector(".profit").innerText
 
 let csv=rows.map(r=>r.join(",")).join("\n")
 
-let blob=new Blob([csv])
+let blob=new Blob([csv],{type:"text/csv"})
 
 let a=document.createElement("a")
 
 a.href=URL.createObjectURL(blob)
 
-a.download="orders.csv"
+a.download="plywood_orders.csv"
 
 a.click()
 

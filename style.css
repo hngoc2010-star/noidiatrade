@@ -7,6 +7,13 @@ margin:0;
 
 }
 
+h2{
+
+font-size:18px;
+margin-bottom:10px;
+
+}
+
 .order{
 
 background:white;
@@ -64,6 +71,7 @@ background:#16a34a;
 color:white;
 border:none;
 border-radius:6px;
+font-size:15px;
 
 }
 

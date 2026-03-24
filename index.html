@@ -4,40 +4,44 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>Plywood Orders</title>
 
 <link rel="stylesheet" href="style.css">
+
 <link rel="manifest" href="manifest.json">
+
 <link rel="apple-touch-icon" href="icon.png">
 
 </head>
 
 <body>
 
-<h2>Plywood Orders</h2>
+<h3>Plywood Orders</h3>
 
 <table>
 
 <thead>
+
 <tr>
 
-<th>Ngày đặt</th>
-<th>Ngày giao</th>
-<th>Nhà cung cấp</th>
-<th>Số lượng</th>
-<th>Loại ván</th>
-<th>1F/2F</th>
+<th>📅</th>
+<th>🚚</th>
+<th>NCC</th>
+<th>Qty</th>
+<th>Type</th>
+<th>F</th>
 <th>Logo</th>
 <th>EXW</th>
-<th>Total EXW</th>
-<th>Logistics</th>
-<th>Sell price</th>
-<th>Sell amount</th>
-<th>Profit</th>
+<th>Total</th>
+<th>Log</th>
+<th>Sell</th>
+<th>Amount</th>
+<th>P</th>
 
 </tr>
+
 </thead>
 
 <tbody id="tbody">
@@ -50,9 +54,9 @@
 
 <td>
 
-<select class="supplierSelect">
+<select class="supplier">
 
-<option value="">--Chọn--</option>
+<option value="">--</option>
 
 <option>Cường Vỹ</option>
 <option>Phúc Tiến</option>
@@ -68,38 +72,42 @@
 
 </select>
 
-<input class="supplierInput" placeholder="Nhập nhà cung cấp">
+<input class="supplierInput" placeholder="NCC">
 
 </td>
 
-<td><input class="number qty"></td>
+<td><input class="num qty"></td>
 
 <td><input></td>
 
 <td>
+
 <select>
 <option>1F</option>
 <option>2F</option>
 </select>
+
 </td>
 
 <td>
+
 <select>
 <option>VNPL</option>
 <option>PhuCau</option>
 <option>Trơn</option>
 </select>
+
 </td>
 
-<td><input class="number exw"></td>
+<td><input class="num exw"></td>
 
-<td class="totalExw">0</td>
+<td class="total">0</td>
 
-<td><input class="number logistics"></td>
+<td><input class="num log"></td>
 
-<td><input class="number sell"></td>
+<td><input class="num sell"></td>
 
-<td class="sellAmount">0</td>
+<td class="amount">0</td>
 
 <td class="profit">0</td>
 
@@ -109,7 +117,7 @@
 
 </table>
 
-<button onclick="addRow()">+ Add Order</button>
+<button onclick="addRow()">+ Add</button>
 
 <script src="app.js"></script>
 

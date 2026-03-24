@@ -1,15 +1,9 @@
 body{
 
 font-family:Arial;
-background:#f3f4f6;
+background:#f2f4f7;
 padding:10px;
 margin:0;
-
-}
-
-h2{
-
-font-size:18px;
 
 }
 
@@ -42,15 +36,14 @@ border-radius:5px;
 
 }
 
-.result{
+.ketqua{
 
-font-size:14px;
-margin-top:6px;
 font-weight:bold;
+margin-top:6px;
 
 }
 
-.copyBtn{
+.copy{
 
 margin-top:8px;
 padding:8px;
@@ -74,7 +67,7 @@ border-radius:6px;
 
 }
 
-.summary{
+.tong{
 
 font-weight:bold;
 margin-bottom:10px;

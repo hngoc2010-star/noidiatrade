@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Plywood Orders</title>
+
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+
+</head>
+
+<body>
+
+<h2>Plywood Orders</h2>
+
+<table id="orderTable">
+
+<thead>
+<tr>
+<th>Ngày đặt</th>
+<th>Ngày giao</th>
+<th>Nhà cung cấp</th>
+<th>Số lượng</th>
+<th>Loại ván</th>
+<th>1F / 2F</th>
+<th>Logo</th>
+<th>EXW</th>
+<th>TOTAL EXW</th>
+<th>Logistics</th>
+<th>SELL</th>
+<th>Sell Amount</th>
+<th>Profit</th>
+</tr>
+</thead>
+
+<tbody id="tbody">
+<tr>
+
+<td><input type="date"></td>
+<td><input type="date"></td>
+
+<td><input></td>
+
+<td><input type="number" class="qty"></td>
+
+<td><input></td>
+
+<td>
+<select>
+<option>1F</option>
+<option>2F</option>
+</select>
+</td>
+
+<td><input></td>
+
+<td><input type="number" class="exw"></td>
+
+<td class="totalExw">0</td>
+
+<td><input type="number" class="logistics"></td>
+
+<td><input type="number" class="sell"></td>
+
+<td class="sellAmount">0</td>
+
+<td class="profit">0</td>
+
+</tr>
+</tbody>
+
+</table>
+
+<button onclick="addRow()">+ Add Order</button>
+
+<script src="app.js"></script>
+
+</body>
+</html>

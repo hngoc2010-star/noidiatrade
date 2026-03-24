@@ -1,93 +1,108 @@
-function clean(x){
+function format(n){
 
-return Number(x.replace(/,/g,'')) || 0
-
-}
-
-function format(x){
-
-return Number(x).toLocaleString("en-US")
+return Number(n).toLocaleString("en-US")
 
 }
 
-function calc(row){
+function clean(n){
 
-let qty=clean(row.querySelector(".qty").value)
+return Number(n.replace(/,/g,'')) || 0
 
-let exw=clean(row.querySelector(".exw").value)
+}
 
-let log=clean(row.querySelector(".log").value)
+function calc(box){
 
-let sell=clean(row.querySelector(".sell").value)
+let qty=clean(box.querySelector(".qty").value)
+let exw=clean(box.querySelector(".exw").value)
+let log=clean(box.querySelector(".log").value)
+let sell=clean(box.querySelector(".sell").value)
 
 let total=qty*exw
-
 let amount=qty*sell
-
 let profit=amount-total-log
 
-row.querySelector(".total").innerText=format(total)
-
-row.querySelector(".amount").innerText=format(amount)
-
-row.querySelector(".profit").innerText=format(profit)
+box.querySelector(".total").innerText=format(total)
+box.querySelector(".amount").innerText=format(amount)
+box.querySelector(".profit").innerText=format(profit)
 
 }
 
-document.addEventListener("input",function(e){
+function addOrder(){
 
-if(e.target.classList.contains("num")){
+let div=document.createElement("div")
 
-let v=e.target.value.replace(/,/g,'')
+div.className="order"
 
-if(!isNaN(v)&&v!=""){
+div.innerHTML=`
 
-e.target.value=format(v)
+<div class="row">
+<input type="date" class="orderDate">
+<input type="date" class="deliveryDate">
+</div>
+
+<div class="row">
+<select class="supplier">
+
+<option>Cường Vỹ</option>
+<option>Phúc Tiến</option>
+<option>Quang Tuệ</option>
+<option>Việt Long</option>
+<option>Hải Hoài</option>
+<option>Hồng Ngọc</option>
+<option>Vân Long</option>
+<option>Phú Hưng</option>
+<option>Thập Hùng</option>
+
+</select>
+
+<select class="logo">
+
+<option>VNPL</option>
+<option>PhuCau</option>
+<option>Trơn</option>
+
+</select>
+
+</div>
+
+<div class="row">
+<input placeholder="Qty" class="qty">
+<input placeholder="EXW" class="exw">
+</div>
+
+<div class="row">
+<input placeholder="Log" class="log">
+<input placeholder="Sell" class="sell">
+</div>
+
+<div class="result">
+Total: <span class="total">0</span> |
+Amount: <span class="amount">0</span> |
+Profit: <span class="profit">0</span>
+</div>
+
+<button class="copyBtn">Copy Result</button>
+
+`
+
+div.addEventListener("input",()=>calc(div))
+
+div.querySelector(".copyBtn").onclick=function(){
+
+let total=div.querySelector(".total").innerText
+let amount=div.querySelector(".amount").innerText
+let profit=div.querySelector(".profit").innerText
+
+let text=`Total: ${total} | Amount: ${amount} | Profit: ${profit}`
+
+navigator.clipboard.writeText(text)
+
+alert("Copied")
 
 }
 
-}
-
-let row=e.target.closest("tr")
-
-if(row) calc(row)
-
-})
-
-document.addEventListener("change",function(e){
-
-if(e.target.classList.contains("supplier")){
-
-let td=e.target.closest("td")
-
-let input=td.querySelector(".supplierInput")
-
-if(e.target.value==="custom"){
-
-input.style.display="block"
-
-}else{
-
-input.style.display="none"
+document.getElementById("orders").appendChild(div)
 
 }
 
-}
-
-})
-
-function addRow(){
-
-let tbody=document.getElementById("tbody")
-
-let r=tbody.rows[0].cloneNode(true)
-
-r.querySelectorAll("input").forEach(i=>i.value="")
-
-r.querySelectorAll(".supplierInput").forEach(i=>i.style.display="none")
-
-r.querySelectorAll(".total,.amount,.profit").forEach(i=>i.innerText="0")
-
-tbody.appendChild(r)
-
-}
+addOrder()

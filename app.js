@@ -1,25 +1,16 @@
 function dinhDangSo(n){
-
 return Number(n).toLocaleString("en-US")
-
 }
 
 function boDauPhay(n){
-
 return Number(String(n).replace(/,/g,''))||0
-
 }
 
 function dinhDangInput(o){
-
 let v=o.value.replace(/,/g,'')
-
 if(!isNaN(v)&&v!=""){
-
 o.value=dinhDangSo(v)
-
 }
-
 }
 
 function formatDateVN(date){
@@ -33,7 +24,6 @@ let month=String(d.getMonth()+1).padStart(2,'0')
 let year=d.getFullYear()
 
 return `${day}/${month}/${year}`
-
 }
 
 function tinh(box){
@@ -43,11 +33,17 @@ let exw=boDauPhay(box.querySelector(".exw").value)
 let log=boDauPhay(box.querySelector(".log").value)
 let ban=boDauPhay(box.querySelector(".ban").value)
 
-let tong=qty*exw
-let doanhThu=qty*ban
-let loiNhuan=doanhThu-tong-log
+let hoaDon=qty*exw
+let vat=hoaDon*0.08
+let tongVAT=hoaDon+vat
 
-box.querySelector(".tong").innerText=dinhDangSo(tong)
+let doanhThu=qty*ban
+let loiNhuan=doanhThu-hoaDon-log
+
+box.querySelector(".hoadon").innerText=dinhDangSo(hoaDon)
+box.querySelector(".vat").innerText=dinhDangSo(vat)
+box.querySelector(".tongvat").innerText=dinhDangSo(tongVAT)
+
 box.querySelector(".doanhthu").innerText=dinhDangSo(doanhThu)
 box.querySelector(".loinhuan").innerText=dinhDangSo(loiNhuan)
 
@@ -60,9 +56,7 @@ function capNhatTong(){
 let tong=0
 
 document.querySelectorAll(".loinhuan").forEach(e=>{
-
 tong+=boDauPhay(e.innerText)
-
 })
 
 document.getElementById("tongLoiNhuan").innerText=dinhDangSo(tong)
@@ -112,30 +106,27 @@ div.innerHTML=`
 </div>
 
 <div class="row">
-
-<input placeholder="Độ dày ván (mm)" class="vanmm" value="${data.vanmm||""}">
-
-<input placeholder="Số lượng" class="soluong" value="${data.soluong||""}">
-
+<input placeholder="Độ dày ván (mm)" class="vanmm">
+<input placeholder="Số lượng" class="soluong">
 </div>
 
 <div class="row">
-
-<input placeholder="Giá EXW" class="exw" value="${data.exw||""}">
-
-<input placeholder="Chi phí Log" class="log" value="${data.log||""}">
-
+<input placeholder="Giá EXW" class="exw">
+<input placeholder="Chi phí Log" class="log">
 </div>
 
 <div class="row">
-
-<input placeholder="Giá bán" class="ban" value="${data.ban||""}">
-
+<input placeholder="Giá bán" class="ban">
 </div>
 
 <div class="ketqua">
 
-Tổng: <span class="tong">0</span> |
+Hóa đơn: <span class="hoadon">0</span> |
+VAT 8%: <span class="vat">0</span> |
+Tổng VAT: <span class="tongvat">0</span>
+
+<br>
+
 Doanh thu: <span class="doanhthu">0</span> |
 Lợi nhuận: <span class="loinhuan">0</span>
 
@@ -151,30 +142,21 @@ let input=div.querySelector(".nccInput")
 select.addEventListener("change",()=>{
 
 if(select.value==="khac"){
-
 input.style.display="block"
-
 }else{
-
 input.style.display="none"
 input.value=""
-
 }
-
-luu()
 
 })
 
 div.addEventListener("input",(e)=>{
 
 if(e.target.tagName==="INPUT"){
-
 dinhDangInput(e.target)
-
 }
 
 tinh(div)
-luu()
 
 })
 
@@ -198,12 +180,10 @@ Logo: ${div.querySelector(".logo").value}
 Số lượng: ${div.querySelector(".soluong").value}
 
 Giá EXW: ${div.querySelector(".exw").value}
-Chi phí Log: ${div.querySelector(".log").value}
-Giá bán: ${div.querySelector(".ban").value}
 
-Tổng: ${div.querySelector(".tong").innerText}
-Doanh thu: ${div.querySelector(".doanhthu").innerText}
-Lợi nhuận: ${div.querySelector(".loinhuan").innerText}
+Hóa đơn: ${div.querySelector(".hoadon").innerText}
+VAT 8%: ${div.querySelector(".vat").innerText}
+Tổng hóa đơn VAT: ${div.querySelector(".tongvat").innerText}
 
 `
 
@@ -215,108 +195,10 @@ alert("Đã copy")
 
 document.getElementById("orders").appendChild(div)
 
-tinh(div)
-
-}
-
-function luu(){
-
-let arr=[]
-
-document.querySelectorAll(".order").forEach(o=>{
-
-let select=o.querySelector(".nccSelect")
-let input=o.querySelector(".nccInput")
-
-let ncc=select.value
-
-if(ncc==="khac"){
-ncc=input.value
-}
-
-arr.push({
-
-ngaydat:o.querySelector(".ngaydat").value,
-ngaygiao:o.querySelector(".ngaygiao").value,
-vanmm:o.querySelector(".vanmm").value,
-soluong:o.querySelector(".soluong").value,
-exw:o.querySelector(".exw").value,
-log:o.querySelector(".log").value,
-ban:o.querySelector(".ban").value
-
-})
-
-})
-
-localStorage.setItem("donvan",JSON.stringify(arr))
-
-}
-
-function load(){
-
-let data=localStorage.getItem("donvan")
-
-if(data){
-
-JSON.parse(data).forEach(d=>taoDon(d))
-
-}else{
-
-themDon()
-
-}
-
 }
 
 function themDon(){
-
 taoDon()
-
 }
 
-function xuatExcel(){
-
-let rows=[["Ngày đặt","Ngày giao","Nhà cung cấp","Ván mm","Số lượng","EXW","Log","Giá bán","Lợi nhuận"]]
-
-document.querySelectorAll(".order").forEach(o=>{
-
-let select=o.querySelector(".nccSelect")
-let input=o.querySelector(".nccInput")
-
-let ncc=select.value
-
-if(ncc==="khac"){
-ncc=input.value
-}
-
-rows.push([
-
-formatDateVN(o.querySelector(".ngaydat").value),
-formatDateVN(o.querySelector(".ngaygiao").value),
-ncc,
-o.querySelector(".vanmm").value,
-o.querySelector(".soluong").value,
-o.querySelector(".exw").value,
-o.querySelector(".log").value,
-o.querySelector(".ban").value,
-o.querySelector(".loinhuan").innerText
-
-])
-
-})
-
-let csv=rows.map(r=>r.join(",")).join("\n")
-
-let blob=new Blob([csv])
-
-let a=document.createElement("a")
-
-a.href=URL.createObjectURL(blob)
-
-a.download="don_van.csv"
-
-a.click()
-
-}
-
-load()
+themDon()

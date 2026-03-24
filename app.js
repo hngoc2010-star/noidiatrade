@@ -36,6 +36,28 @@ row.querySelector(".profit").innerText=formatNumber(profit)
 
 }
 
+document.addEventListener("change",function(e){
+
+if(e.target.classList.contains("supplierSelect")){
+
+let td=e.target.closest("td")
+
+let input=td.querySelector(".supplierInput")
+
+if(e.target.value==="custom"){
+
+input.style.display="block"
+
+}else{
+
+input.style.display="none"
+
+}
+
+}
+
+})
+
 document.addEventListener("input",function(e){
 
 if(e.target.classList.contains("number")){
@@ -67,6 +89,8 @@ let tbody=document.getElementById("tbody")
 let newRow=tbody.rows[0].cloneNode(true)
 
 newRow.querySelectorAll("input").forEach(i=>i.value="")
+
+newRow.querySelectorAll(".supplierInput").forEach(i=>i.style.display="none")
 
 newRow.querySelectorAll(".totalExw,.sellAmount,.profit")
 .forEach(i=>i.innerText="0")

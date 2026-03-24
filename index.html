@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,35 +16,54 @@
 
 <h2>Plywood Orders</h2>
 
-<table id="orderTable">
+<table>
 
 <thead>
+
 <tr>
 <th>Ngày đặt</th>
 <th>Ngày giao</th>
 <th>Nhà cung cấp</th>
 <th>Số lượng</th>
 <th>Loại ván</th>
-<th>1F / 2F</th>
+<th>1F/2F</th>
 <th>Logo</th>
 <th>EXW</th>
-<th>TOTAL EXW</th>
+<th>Total EXW</th>
 <th>Logistics</th>
-<th>SELL</th>
-<th>Sell Amount</th>
+<th>Sell price</th>
+<th>Sell amount</th>
 <th>Profit</th>
 </tr>
+
 </thead>
 
 <tbody id="tbody">
+
 <tr>
 
 <td><input type="date"></td>
+
 <td><input type="date"></td>
 
-<td><input></td>
+<td>
+<input list="suppliers">
+<datalist id="suppliers">
 
-<td><input type="number" class="qty"></td>
+<option>Cường Vỹ</option>
+<option>Phúc Tiến</option>
+<option>Quang Tuệ</option>
+<option>Việt Long</option>
+<option>Hải Hoài</option>
+<option>Hồng Ngọc</option>
+<option>Vân Long</option>
+<option>Phú Hưng</option>
+<option>Thập Hùng</option>
+
+</datalist>
+</td>
+
+<td><input class="qty number"></td>
 
 <td><input></td>
 
@@ -54,21 +74,28 @@
 </select>
 </td>
 
-<td><input></td>
+<td>
+<select>
+<option>VNPL</option>
+<option>PhuCau</option>
+<option>Trơn</option>
+</select>
+</td>
 
-<td><input type="number" class="exw"></td>
+<td><input class="exw number"></td>
 
 <td class="totalExw">0</td>
 
-<td><input type="number" class="logistics"></td>
+<td><input class="logistics number"></td>
 
-<td><input type="number" class="sell"></td>
+<td><input class="sell number"></td>
 
 <td class="sellAmount">0</td>
 
 <td class="profit">0</td>
 
 </tr>
+
 </tbody>
 
 </table>
@@ -78,4 +105,5 @@
 <script src="app.js"></script>
 
 </body>
+
 </html>

@@ -1,68 +1,75 @@
 body{
 
 font-family:Arial;
-padding:5px;
-margin:0;
 background:#f2f4f7;
+padding:10px;
+margin:0;
 
 }
 
-h3{
+h2{
+
+font-size:18px;
+margin-bottom:10px;
+
+}
+
+.order{
+
+background:white;
+border-radius:8px;
+padding:10px;
+margin-bottom:10px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
+
+}
+
+.row{
+
+display:flex;
+gap:6px;
+margin-bottom:6px;
+
+}
+
+.row input,
+.row select{
+
+flex:1;
+padding:6px;
+font-size:14px;
+border:1px solid #ddd;
+border-radius:4px;
+
+}
+
+.result{
 
 font-size:14px;
-margin:5px 0;
+margin-top:5px;
 
 }
 
-table{
+.copyBtn{
 
-width:100%;
-border-collapse:collapse;
-table-layout:fixed;
-background:white;
-
-}
-
-th{
-
-font-size:9px;
-padding:2px;
-
-}
-
-td{
-
-border:1px solid #ddd;
-padding:1px;
-
-}
-
-input,select{
-
-width:100%;
+margin-top:6px;
+padding:6px;
+background:#2563eb;
+color:white;
 border:none;
-outline:none;
-font-size:10px;
-text-align:center;
-background:transparent;
-
-}
-
-.supplierInput{
-
-display:none;
+border-radius:5px;
+width:100%;
 
 }
 
 button{
 
+margin-top:10px;
+padding:10px;
 width:100%;
-margin-top:5px;
-padding:6px;
-font-size:12px;
-background:#2563eb;
+background:#16a34a;
 color:white;
 border:none;
-border-radius:4px;
+border-radius:6px;
 
 }
